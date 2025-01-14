@@ -9,8 +9,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     boolean enabled = true;
     boolean isZeroing;
-
-
+    boolean isExtending;
 
     public ElevatorSubsystem(ElevatorIO io){
         this.io = io;
@@ -18,7 +17,25 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public Command zeroElevator(){
         return new RunCommand(
-            () -> {}
-        );
+            () -> {
+                isZeroing = true;
+            }
+        ).finallyDo(
+            () -> {
+                isZeroing = false;
+            }
+        ).until(null); //until the elevator is zeroed
+    }
+
+    public Command extendToLimit(){
+        return new RunCommand(
+            () -> {
+                isExtending = true;
+            }
+        ).finallyDo(
+            () -> {
+                isExtending = false;
+            }
+        ).until(null); //until the elevator is fully extended
     }
 }
