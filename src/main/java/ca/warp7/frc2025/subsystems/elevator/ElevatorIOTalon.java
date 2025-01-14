@@ -9,7 +9,7 @@ public class ElevatorIOTalon implements ElevatorIO {
     }
 
     @Override
-    public void maxMotor() {
+    public void limitSwitch() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'maxMotor'");
     }
