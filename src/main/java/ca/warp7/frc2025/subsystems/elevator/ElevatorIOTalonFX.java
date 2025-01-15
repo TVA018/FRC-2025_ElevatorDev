@@ -1,12 +1,16 @@
 package ca.warp7.frc2025.subsystems.elevator;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
 public class ElevatorIOTalonFX implements ElevatorIO {
     /*Hardware*/
-    private final TalonFX motor;
+    private final TalonFX motor1;
+    private final TalonFX motor2;
     //Have some sort of way to detect current
 
-    public ElevatorIOTalonFX(int motorId){
-        //Create a new TalonFX motor controller with the motorId
+    public ElevatorIOTalonFX(int motor1Id, int motor2Id){
+        motor1 = new TalonFX(motor1Id);
+        motor2 = new TalonFX(motor2Id);
     }
     
     @Override
