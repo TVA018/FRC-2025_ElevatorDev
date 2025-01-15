@@ -18,23 +18,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     public Command zeroElevator(){
         return new RunCommand(
             () -> {
-                isZeroing = true;
+                io.setVoltage(0); //Replace the 0 with an actual voltage later
             }
-        ).finallyDo(
-            () -> {
-                isZeroing = false;
-            }
-        ).until(null); //until the elevator is zeroed
+        ).until(null); //until the elevator is fully zeroed
     }
 
     public Command extendToLimit(){
         return new RunCommand(
             () -> {
-                isExtending = true;
-            }
-        ).finallyDo(
-            () -> {
-                isExtending = false;
+                io.setVoltage(0); //Replace the 0 with an actual voltage later
             }
         ).until(null); //until the elevator is fully extended
     }
