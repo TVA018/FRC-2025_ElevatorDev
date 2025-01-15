@@ -12,16 +12,21 @@ public class ElevatorIOTalonFX implements ElevatorIO {
         motor1 = new TalonFX(motor1Id);
         motor2 = new TalonFX(motor2Id);
     }
+
+    public void setVoltage(double volts){
+        motor1.setVoltage(volts);
+        motor2.setVoltage(volts);
+    }
     
     @Override
     public void zeroMotor() {
-        // TODO Auto-generated method stub
+        // Move the motor back
         throw new UnsupportedOperationException("Unimplemented method 'zeroMotor'");
     }
 
     @Override
     public void limitSwitch() {
-        // TODO Auto-generated method stub
+        // Move the motor forward
         throw new UnsupportedOperationException("Unimplemented method 'maxMotor'");
     }
     
