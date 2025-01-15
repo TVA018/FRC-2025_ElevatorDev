@@ -13,6 +13,7 @@ public class ElevatorIOTalonFX implements ElevatorIO {
         motor2 = new TalonFX(motor2Id);
     }
 
+    @Override
     public void setVoltage(double volts){
         motor1.setVoltage(volts);
         motor2.setVoltage(volts);
