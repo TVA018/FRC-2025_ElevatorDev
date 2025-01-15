@@ -13,5 +13,11 @@ public class ElevatorIOSim implements ElevatorIO {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'maxMotor'");
     }
+
+    @Override
+    public void setVoltage(double volts) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setVoltage'");
+    }
     
 }
