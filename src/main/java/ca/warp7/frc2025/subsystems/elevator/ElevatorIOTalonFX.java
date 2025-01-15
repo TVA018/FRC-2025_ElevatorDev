@@ -4,6 +4,10 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     /*Hardware*/
     private final TalonFX motor;
     //Have some sort of way to detect current
+
+    public ElevatorIOTalonFX(int motorId){
+        //Create a new TalonFX motor controller with the motorId
+    }
     
     @Override
     public void zeroMotor() {
