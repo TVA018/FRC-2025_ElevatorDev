@@ -1,6 +1,6 @@
 package ca.warp7.frc2025.subsystems.elevator;
 
-public class ElevatorIOTalon implements ElevatorIO {
+public class ElevatorIOTalonFX implements ElevatorIO {
 
     @Override
     public void zeroMotor() {
