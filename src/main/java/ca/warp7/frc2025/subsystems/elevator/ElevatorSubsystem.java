@@ -18,9 +18,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     public Command zeroElevator(){
         return new RunCommand(
             () -> {
-                io.setVoltage(0); //Replace the 0 with an actual voltage later
+                io.zeroMotor();
             }
-        ).until(null); //until the elevator is fully zeroed
+        ); //until the elevator is fully zeroed
     }
 
     public Command extendToLimit(){

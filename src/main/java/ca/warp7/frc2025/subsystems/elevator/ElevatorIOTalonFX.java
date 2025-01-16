@@ -21,8 +21,8 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     
     @Override
     public void zeroMotor() {
-        // Move the motor back
-        throw new UnsupportedOperationException("Unimplemented method 'zeroMotor'");
+        motor1.setPosition(0);
+        motor2.setPosition(0);
     }
 
     @Override
