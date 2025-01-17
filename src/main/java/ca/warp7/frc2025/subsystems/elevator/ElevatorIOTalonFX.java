@@ -1,7 +1,5 @@
 package ca.warp7.frc2025.subsystems.elevator;
 
-import org.opencv.features2d.FlannBasedMatcher;
-
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
