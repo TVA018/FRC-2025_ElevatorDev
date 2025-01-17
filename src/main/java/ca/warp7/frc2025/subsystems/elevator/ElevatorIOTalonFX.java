@@ -43,11 +43,11 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     
             double motor2Output = pidController2.calculate(motor2CurrentPosition, 0); 
             motor2.set(motor2Output);
-            return false;
+            return true; //Keep zeroing
         } else {
             motor1.setPosition(0);
             motor2.setPosition(0);
-            return true;
+            return false; //Goal reached, stop zeroing
         }
     }
 
