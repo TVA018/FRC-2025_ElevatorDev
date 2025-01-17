@@ -35,11 +35,16 @@ public class ElevatorIOTalonFX implements ElevatorIO {
         double motor1CurrentPosition = motor1.getPosition().getValueAsDouble(); // The function for returning the encoder value may be wrong here
         double motor2CurrentPosition = motor2.getPosition().getValueAsDouble();
 
-        double motor1Output = pidController1.calculate(motor1CurrentPosition, 0); //Zero both motors using PID control
-        motor1.set(motor1Output);
-
-        double motor2Output = pidController2.calculate(motor2CurrentPosition, 0); 
-        motor2.set(motor2Output);
+        if(motor1CurrentPosition < 0){
+            double motor1Output = pidController1.calculate(motor1CurrentPosition, 0); //Zero both motors using PID control
+            motor1.set(motor1Output);
+    
+            double motor2Output = pidController2.calculate(motor2CurrentPosition, 0); 
+            motor2.set(motor2Output);
+        } else {
+            motor1.setPosition(0);
+            motor2.setPosition(0);
+        }
     }
 
     @Override
