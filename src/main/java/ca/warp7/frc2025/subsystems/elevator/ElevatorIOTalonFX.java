@@ -1,5 +1,7 @@
 package ca.warp7.frc2025.subsystems.elevator;
 
+import org.opencv.features2d.FlannBasedMatcher;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -31,7 +33,7 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     }
     
     @Override
-    public void zeroMotor() {
+    public boolean zeroMotor() {
         double motor1CurrentPosition = motor1.getPosition().getValueAsDouble(); // The function for returning the encoder value may be wrong here
         double motor2CurrentPosition = motor2.getPosition().getValueAsDouble();
 
@@ -41,14 +43,16 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     
             double motor2Output = pidController2.calculate(motor2CurrentPosition, 0); 
             motor2.set(motor2Output);
+            return false;
         } else {
             motor1.setPosition(0);
             motor2.setPosition(0);
+            return true;
         }
     }
 
     @Override
-    public void limitSwitch() {
+    public boolean limitSwitch() {
         // Move the motor forward
         throw new UnsupportedOperationException("Unimplemented method 'maxMotor'");
     }

@@ -16,10 +16,16 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public Command zeroElevator(){
-        return new RunCommand(
+        return new RunCommand( //Set isZeroing to true
             () -> {
-                io.zeroMotor();
+                isZeroing = true;
             }
+        ).andThen(
+            () -> { //Keep zeroing and cache the return value in isZeroing
+                isZeroing = io.zeroMotor();
+            }
+        ).until( //Until isZeroing is false.
+            () -> {return isZeroing;}
         ); //until the elevator is fully zeroed
     }
 
