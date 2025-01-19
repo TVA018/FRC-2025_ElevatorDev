@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.littletonrobotics.junction.Logger;
 
 public class ElevatorSubsystem extends SubsystemBase {
     ElevatorIO io;
@@ -17,6 +18,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private static final double kI = 0.0;
     private static final double kD = 0.0;
     final PIDController pidController;
+    
 
     public ElevatorSubsystem(ElevatorIO io) {
         this.io = io;
@@ -29,6 +31,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         if (currentPosition != targetPosition) {
             double motorOutput = pidController.calculate(currentPosition, targetPosition); // Zero both motors using PID control
             io.setSpeed(motorOutput);
+            Logger.recordOutput("Elevator/Speed", motorOutput);
+            Logger.recordOutput("Elevator/CurrentPosition", currentPosition);
         }
     }
 
@@ -36,6 +40,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         return new RunCommand(
             () -> {
                 targetPosition = position;
+                Logger.recordOutput("Elevator/TargetPosition", targetPosition);
             } //function
         );
     }
