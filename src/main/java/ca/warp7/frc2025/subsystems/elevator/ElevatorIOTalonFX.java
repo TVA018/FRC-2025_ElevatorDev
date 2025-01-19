@@ -50,11 +50,7 @@ public class ElevatorIOTalonFX implements ElevatorIO {
         }
     }
 
-    @Override
-    public boolean limitSwitch() {
-        // Move the motor forward
-        throw new UnsupportedOperationException("Unimplemented method 'maxMotor'");
-    }
+
 
     @Override
     public void setPosition(double position) {
