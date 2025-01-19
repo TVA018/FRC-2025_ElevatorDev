@@ -11,29 +11,29 @@ public class ElevatorSubsystem extends SubsystemBase {
     boolean isZeroing;
     boolean isExtending;
 
-    public ElevatorSubsystem(ElevatorIO io){
+    public ElevatorSubsystem(ElevatorIO io) {
         this.io = io;
     }
 
-    public Command zeroElevator(){
-        return new RunCommand( //Set isZeroing to true
-            () -> {
-                isZeroing = true;
-            }
-        ).andThen(
-            () -> { //Keep zeroing and cache the return value in isZeroing
-                isZeroing = io.zeroMotor();
-            }
-        ).until( //Until isZeroing is false.
-            () -> {return isZeroing;}
-        ); //until the elevator is fully zeroed
+    public Command zeroElevator() {
+        return new RunCommand( // Set isZeroing to true
+                        () -> {
+                            isZeroing = true;
+                        })
+                .andThen(
+                        () -> { // Keep zeroing and cache the return value in isZeroing
+                            isZeroing = io.zeroMotor();
+                        })
+                .until( // Until isZeroing is false.
+                        () -> {
+                            return isZeroing;
+                        }); // until the elevator is fully zeroed
     }
 
-    public Command extendToLimit(){
-        return new RunCommand(
-            () -> {
-                io.setVoltage(0); //Replace the 0 with an actual voltage later
-            }
-        ).until(null); //until the elevator is fully extended
+    public Command extendToLimit() {
+        return new RunCommand(() -> {
+                    io.setVoltage(0); // Replace the 0 with an actual voltage later
+                })
+                .until(null); // until the elevator is fully extended
     }
 }

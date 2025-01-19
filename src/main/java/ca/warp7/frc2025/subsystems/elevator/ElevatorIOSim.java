@@ -19,5 +19,10 @@ public class ElevatorIOSim implements ElevatorIO {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setVoltage'");
     }
-    
+
+    @Override
+    public void setPosition(double position) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setPosition'");
+    }
 }
