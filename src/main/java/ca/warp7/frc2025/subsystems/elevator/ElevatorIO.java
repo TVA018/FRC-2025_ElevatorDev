@@ -5,4 +5,7 @@ public interface ElevatorIO {
 
     public abstract void setPosition(double position);
 
+    public abstract void setSpeed(double speed);
+
+    public abstract double getPosition();
 }

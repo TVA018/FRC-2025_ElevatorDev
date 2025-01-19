@@ -14,4 +14,16 @@ public class ElevatorIOSim implements ElevatorIO {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setPosition'");
     }
+
+    @Override
+    public void setSpeed(double speed) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setSpeed'");
+    }
+
+    @Override
+    public double getPosition() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPosition'");
+    }
 }

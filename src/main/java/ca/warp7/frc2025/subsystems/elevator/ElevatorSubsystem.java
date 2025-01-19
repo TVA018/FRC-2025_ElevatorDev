@@ -1,5 +1,6 @@
 package ca.warp7.frc2025.subsystems.elevator;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -8,32 +9,34 @@ public class ElevatorSubsystem extends SubsystemBase {
     ElevatorIO io;
 
     boolean enabled = true;
-    boolean isZeroing;
-    boolean isExtending;
+
+    double targetPosition;
+    
+    // Untuned PID constants
+    private static final double kP = 0.1;
+    private static final double kI = 0.0;
+    private static final double kD = 0.0;
+    final PIDController pidController;
 
     public ElevatorSubsystem(ElevatorIO io) {
         this.io = io;
+        this.pidController = new PIDController(kP, kI, kD);
     }
 
-    public Command zeroElevator() {
-        return new RunCommand( // Set isZeroing to true
-                        () -> {
-                            isZeroing = true;
-                        })
-                .andThen(
-                        () -> { // Keep zeroing and cache the return value in isZeroing
-                            isZeroing = io.zeroMotor();
-                        })
-                .until( // Until isZeroing is false.
-                        () -> {
-                            return isZeroing;
-                        }); // until the elevator is fully zeroed
+    public void periodic(){
+        double currentPosition = io.getPosition();
+
+        if (currentPosition != targetPosition) {
+            double motorOutput = pidController.calculate(currentPosition, targetPosition); // Zero both motors using PID control
+            io.setSpeed(motorOutput);
+        }
     }
 
-    public Command extendToLimit() {
-        return new RunCommand(() -> {
-                    io.setVoltage(0); // Replace the 0 with an actual voltage later
-                })
-                .until(null); // until the elevator is fully extended
+    public Command goToPosition(double position){
+        return new RunCommand(
+            () -> {
+                targetPosition = position;
+            } //function
+        );
     }
 }
