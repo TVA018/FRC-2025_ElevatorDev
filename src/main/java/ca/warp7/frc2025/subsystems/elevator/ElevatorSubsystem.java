@@ -26,10 +26,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void periodic(){
         double currentPosition = io.getPosition();
 
-        if (currentPosition != targetPosition) {
-            double motorOutput = pidController.calculate(currentPosition, targetPosition); // Zero both motors using PID control
-            io.setSpeed(motorOutput);
-        }
+        double motorOutput = pidController.calculate(currentPosition, targetPosition); // Zero both motors using PID control
+        io.setVoltage(motorOutput);
     }
 
     public Command goToPosition(double position){
