@@ -33,6 +33,6 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
     @Override
     public double getPosition() {
-        return motor1.getPosition().getValueAsDouble(); //motor1 and motor2 should be synced
+        return motor1.getPosition().getValueAsDouble(); // motor1 and motor2 should be synced
     }
 }
