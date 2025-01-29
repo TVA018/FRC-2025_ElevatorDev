@@ -45,7 +45,6 @@ public class ElevatorIOSim implements ElevatorIO {
 
     @Override
     public double getPosition() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPosition'");
+        return 0.0;
     }
 }
