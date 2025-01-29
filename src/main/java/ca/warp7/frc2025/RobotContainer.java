@@ -10,6 +10,10 @@ import ca.warp7.frc2025.subsystems.drive.GyroIO;
 import ca.warp7.frc2025.subsystems.drive.GyroIOPigeon2;
 import ca.warp7.frc2025.subsystems.drive.ModuleIOSim;
 import ca.warp7.frc2025.subsystems.drive.ModuleIOTalonFX;
+import ca.warp7.frc2025.subsystems.elevator.ElevatorSubsystem;
+import ca.warp7.frc2025.subsystems.elevator.ElevatorIOTalonFX;
+import ca.warp7.frc2025.subsystems.elevator.ElevatorIO;
+import ca.warp7.frc2025.subsystems.elevator.ElevatorIOSim;
 import ca.warp7.frc2025.subsystems.generated.TunerConstants;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,6 +25,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
     // Subsystems
     private final DriveSubsystem drive;
+    private final ElevatorSubsystem elevator;
 
     // Controller
     private final CommandXboxController controller = new CommandXboxController(0);
@@ -42,6 +47,8 @@ public class RobotContainer {
                         new ModuleIOTalonFX(TunerConstants.FrontRight),
                         new ModuleIOTalonFX(TunerConstants.BackLeft),
                         new ModuleIOTalonFX(TunerConstants.BackRight));
+                
+                elevator = new ElevatorSubsystem(new ElevatorIOSim()); //testing elevator
                 break;
 
             case SIM:
@@ -52,9 +59,12 @@ public class RobotContainer {
                         new ModuleIOSim(TunerConstants.FrontRight),
                         new ModuleIOSim(TunerConstants.BackLeft),
                         new ModuleIOSim(TunerConstants.BackRight));
+                
+                elevator = new ElevatorSubsystem(new ElevatorIOSim()); //testing elevator
                 break;
             default:
                 drive = null;
+                elevator = null; //testing elevator
         }
 
         // Set up auto routines
