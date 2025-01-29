@@ -40,6 +40,8 @@ public class RobotContainer {
             case REPLAY:
                 drive = new DriveSubsystem(
                         new GyroIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {});
+                
+                elevator = null;
                 break;
             case REAL:
                 // Real robot, instantiate hardware IO implementations
@@ -67,6 +69,7 @@ public class RobotContainer {
             default:
                 drive = null;
                 elevator = null; // testing elevator
+                break;
         }
 
         // Set up auto routines
