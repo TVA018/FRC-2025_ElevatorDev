@@ -1,6 +1,7 @@
 package ca.warp7.frc2025.subsystems.elevator;
 
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
@@ -9,14 +10,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ElevatorIOSim implements ElevatorIO {
     ElevatorSim elevatorSim = new ElevatorSim(
-            DCMotor.getKrakenX60(2),
+            DCMotor.getKrakenX60Foc(2),
             ElevatorSubsystem.GEAR_RATIO,
-            0.5, // Not accurate, just a placeholder value
+            // Add half of first stage mass bc its on a 2:1 ratio compared to carriage
+            Units.lbsToKilograms(10.8 + (2.5 / 2)),
             ElevatorSubsystem.DRUM_RADIUS_METERS,
             0.0,
-            5.0,
+            10,
             true,
-            0.0);
+            0);
 
     Mechanism2d mech = new Mechanism2d(10, 10);
     MechanismRoot2d root = mech.getRoot("elevator", 0, 0);
@@ -36,12 +38,13 @@ public class ElevatorIOSim implements ElevatorIO {
         inputs.elevatorVelocityMetersPerSec = elevatorSim.getVelocityMetersPerSecond();
         inputs.elevatorAppliedVolts = currentVolts;
         inputs.elevatorCurrentAmps = elevatorSim.getCurrentDrawAmps();
-        m_elevator.setLength(currentVolts);
+        m_elevator.setLength(inputs.elevatorPositionMeters);
     }
 
     @Override
     public void setVoltage(double volts) {
         currentVolts = volts;
+        elevatorSim.setInputVoltage(currentVolts);
     }
 
     @Override
