@@ -18,9 +18,9 @@ public class ElevatorIOSim implements ElevatorIO {
             true,
             0.0);
 
-    Mechanism2d mech = new Mechanism2d(3, 3);
-    MechanismRoot2d root = mech.getRoot("elevator", 2, 0);
-    MechanismLigament2d m_elevator = root.append(new MechanismLigament2d("elevator", 5, 30));
+    Mechanism2d mech = new Mechanism2d(10, 10);
+    MechanismRoot2d root = mech.getRoot("elevator", 0, 0);
+    MechanismLigament2d m_elevator = root.append(new MechanismLigament2d("elevator", 5, 80));
 
     private double numRotations = 0.0; // Temporary tracking variable for testing before implementing ElevatorSim
     double currentVolts = 0.0;
@@ -36,6 +36,7 @@ public class ElevatorIOSim implements ElevatorIO {
         inputs.elevatorVelocityMetersPerSec = elevatorSim.getVelocityMetersPerSecond();
         inputs.elevatorAppliedVolts = currentVolts;
         inputs.elevatorCurrentAmps = elevatorSim.getCurrentDrawAmps();
+        m_elevator.setLength(currentVolts);
     }
 
     @Override
