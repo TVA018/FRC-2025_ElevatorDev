@@ -2,6 +2,10 @@ package ca.warp7.frc2025.subsystems.elevator;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ElevatorIOSim implements ElevatorIO {
     ElevatorSim elevatorSim = new ElevatorSim(
@@ -14,8 +18,16 @@ public class ElevatorIOSim implements ElevatorIO {
             true,
             0.0);
 
+    Mechanism2d mech = new Mechanism2d(3, 3);
+    MechanismRoot2d root = mech.getRoot("elevator", 2, 0);
+    MechanismLigament2d m_elevator = root.append(new MechanismLigament2d("elevator", 5, 30));
+
     private double numRotations = 0.0; // Temporary tracking variable for testing before implementing ElevatorSim
     double currentVolts = 0.0;
+
+    public ElevatorIOSim() {
+        SmartDashboard.putData("ElevatorMech2d", mech);
+    }
 
     @Override
     public void updateInputs(ElevatorIOInputs inputs) {
