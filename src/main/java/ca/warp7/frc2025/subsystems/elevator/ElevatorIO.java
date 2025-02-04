@@ -21,4 +21,6 @@ public interface ElevatorIO {
     public abstract void setSpeed(double speed);
 
     public abstract double getPosition();
+
+    public abstract void setTarget(double position);
 }

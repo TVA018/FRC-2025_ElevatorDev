@@ -1,5 +1,7 @@
 package ca.warp7.frc2025.subsystems.elevator;
 
+import static ca.warp7.frc2025.subsystems.elevator.ElevatorConstants.*;
+
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -7,14 +9,16 @@ import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Color8Bit;
 
 public class ElevatorIOSim implements ElevatorIO {
     ElevatorSim elevatorSim = new ElevatorSim(
             DCMotor.getKrakenX60Foc(2),
-            ElevatorSubsystem.GEAR_RATIO,
+            GEAR_RATIO,
             // Add half of first stage mass bc its on a 2:1 ratio compared to carriage
             Units.lbsToKilograms(10.8 + (2.5 / 2)),
-            ElevatorSubsystem.DRUM_RADIUS_METERS,
+            DRUM_RADIUS_METERS,
             0.0,
             10,
             true,
@@ -22,13 +26,19 @@ public class ElevatorIOSim implements ElevatorIO {
 
     Mechanism2d mech = new Mechanism2d(10, 10);
     MechanismRoot2d root = mech.getRoot("elevator", 0, 0);
-    MechanismLigament2d m_elevator = root.append(new MechanismLigament2d("elevator", 5, 80));
+    MechanismLigament2d m_targetLength =
+            root.append(new MechanismLigament2d("targetLength", 0, ELEVATOR_ANGLE.getDegrees()));
+    MechanismLigament2d m_elevator = root.append(new MechanismLigament2d("elevator", 0, ELEVATOR_ANGLE.getDegrees()));
 
     private double numRotations = 0.0; // Temporary tracking variable for testing before implementing ElevatorSim
     double currentVolts = 0.0;
 
     public ElevatorIOSim() {
         SmartDashboard.putData("ElevatorMech2d", mech);
+        m_elevator.setLineWeight(5);
+        m_elevator.setColor(new Color8Bit(Color.kBlue));
+        m_targetLength.setLineWeight(1);
+        m_targetLength.setColor(new Color8Bit(Color.kOrange));
     }
 
     @Override
@@ -62,5 +72,9 @@ public class ElevatorIOSim implements ElevatorIO {
     @Override
     public double getPosition() {
         return 0.0;
+    }
+
+    public void setTarget(double position) {
+        m_targetLength.setLength(position);
     }
 }
