@@ -63,7 +63,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public Command goToPosition(double position) {
-        return new RunCommand(
+        return this.runOnce(
                 () -> {
                     // targetPosition;
                     Logger.recordOutput("Elevator/TargetPosition", targetPosition);
