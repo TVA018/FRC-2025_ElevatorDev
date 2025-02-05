@@ -18,24 +18,10 @@ public class ElevatorIOTalonFX implements ElevatorIO {
         motor1.setVoltage(volts);
         motor2.setVoltage(volts);
     }
-
     @Override
-    public void setPosition(double position) {
-        motor1.setPosition(position);
-        motor2.setPosition(position);
+    public void updateInputs(ElevatorIOInputs inputs) {
+        
+        inputs.elevatorPositionMeters = motor1.getPosition().getValueAsDouble();
+        inputs.elevatorAppliedVolts = motor1.getMotorVoltage().getValueAsDouble();
     }
-
-    @Override
-    public void setSpeed(double speed) {
-        motor1.set(speed);
-        motor2.set(speed);
-    }
-
-    @Override
-    public double getPosition() {
-        return motor1.getPosition().getValueAsDouble(); // motor1 and motor2 should be synced
-    }
-
-    @Override
-    public void setTarget(double position) {}
 }
