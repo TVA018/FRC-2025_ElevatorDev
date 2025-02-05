@@ -18,9 +18,10 @@ public class ElevatorIOTalonFX implements ElevatorIO {
         motor1.setVoltage(volts);
         motor2.setVoltage(volts);
     }
+
     @Override
     public void updateInputs(ElevatorIOInputs inputs) {
-        
+
         inputs.elevatorPositionMeters = motor1.getPosition().getValueAsDouble();
         inputs.elevatorAppliedVolts = motor1.getMotorVoltage().getValueAsDouble();
     }

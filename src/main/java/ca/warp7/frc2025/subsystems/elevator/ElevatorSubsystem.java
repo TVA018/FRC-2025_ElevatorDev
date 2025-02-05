@@ -2,6 +2,7 @@ package ca.warp7.frc2025.subsystems.elevator;
 
 import static ca.warp7.frc2025.subsystems.elevator.ElevatorConstants.*;
 
+import ca.warp7.frc2025.subsystems.elevator.ElevatorConstants.LEVEL;
 import ca.warp7.frc2025.util.LoggedTunableNumber;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
@@ -28,7 +29,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         this.io = io;
         this.pidController = new ProfiledPIDController(kP.get(), kI.get(), kD.get(), new Constraints(10.0, 5.0));
         this.targetPosition = 0;
-
     }
 
     @Override
@@ -47,8 +47,7 @@ public class ElevatorSubsystem extends SubsystemBase {
                 kP,
                 kI,
                 kD);
-
-        System.out.println(motorOutput);
+        motorOutput = Math.max(Math.min(motorOutput, 12.0), -12.0);
         io.setVoltage(motorOutput);
         io.updateInputs(inputs);
         Logger.processInputs("Elevator Inputs", inputs);
