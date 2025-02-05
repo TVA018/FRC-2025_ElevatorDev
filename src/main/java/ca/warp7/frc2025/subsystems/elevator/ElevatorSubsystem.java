@@ -28,7 +28,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         this.io = io;
         this.pidController = new ProfiledPIDController(kP.get(), kI.get(), kD.get(), new Constraints(10.0, 5.0));
         this.targetPosition = 0;
-        io.setTarget(this.targetPosition);
+
     }
 
     @Override
