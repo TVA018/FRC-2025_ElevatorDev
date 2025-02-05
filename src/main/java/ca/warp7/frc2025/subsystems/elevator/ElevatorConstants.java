@@ -1,18 +1,17 @@
 package ca.warp7.frc2025.subsystems.elevator;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 
 public class ElevatorConstants {
-    public static final double GEAR_RATIO = 12.5 / 1.0; // Temporary value, not accurate
-    public static final double DRUM_RADIUS_METERS = Units.inchesToMeters(5); // Temporary value, not accurate
+    public static final double GEAR_RATIO = 80.0 / 14.0;
+    public static final double DRUM_RADIUS_METERS = 0.04514 / 2.0;
     public static final Rotation2d ELEVATOR_ANGLE = Rotation2d.fromDegrees(80.0);
 
     public static enum LEVEL {
         L1(0),
-        L2(5),
-        L3(10),
-        L4(15);
+        L2(0.6),
+        L3(1.2),
+        L4(1.8);
 
         private final double position;
 
@@ -27,5 +26,5 @@ public class ElevatorConstants {
 
     public static final record PIDGains(double kP, double kI, double kD) {}
 
-    public static final PIDGains GAINS = new PIDGains(2, 0, 0);
+    public static final PIDGains GAINS = new PIDGains(25, 0, 0); // a P value of 25 seems to work well
 }

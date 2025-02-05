@@ -1,5 +1,7 @@
 package ca.warp7.frc2025.subsystems.elevator;
 
+import static ca.warp7.frc2025.subsystems.elevator.ElevatorConstants.*;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 
 public class ElevatorIOTalonFX implements ElevatorIO {
@@ -21,8 +23,12 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
     @Override
     public void updateInputs(ElevatorIOInputs inputs) {
-
-        inputs.elevatorPositionMeters = motor1.getPosition().getValueAsDouble();
+        double rotations = motor1.getPosition().getValueAsDouble();
+        inputs.elevatorPositionMeters = rotationsToMeters(rotations);
         inputs.elevatorAppliedVolts = motor1.getMotorVoltage().getValueAsDouble();
+    }
+
+    private double rotationsToMeters(double rotations) {
+        return (rotations * GEAR_RATIO) / (2 * Math.PI) * DRUM_RADIUS_METERS;
     }
 }

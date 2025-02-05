@@ -3,7 +3,6 @@ package ca.warp7.frc2025.subsystems.elevator;
 import static ca.warp7.frc2025.subsystems.elevator.ElevatorConstants.*;
 
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 
 public class ElevatorIOSim implements ElevatorIO {
@@ -11,10 +10,10 @@ public class ElevatorIOSim implements ElevatorIO {
             DCMotor.getKrakenX60Foc(2),
             GEAR_RATIO,
             // Add half of first stage mass bc its on a 2:1 ratio compared to carriage
-            Units.lbsToKilograms(10.8 + (2.5 / 2)),
+            0.5,
             DRUM_RADIUS_METERS,
             0.0,
-            15,
+            2,
             true,
             0);
 
