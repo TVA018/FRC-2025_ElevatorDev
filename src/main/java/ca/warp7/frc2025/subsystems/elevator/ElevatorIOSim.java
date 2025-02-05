@@ -20,7 +20,7 @@ public class ElevatorIOSim implements ElevatorIO {
             Units.lbsToKilograms(10.8 + (2.5 / 2)),
             DRUM_RADIUS_METERS,
             0.0,
-            10,
+            15,
             true,
             0);
 
@@ -29,8 +29,6 @@ public class ElevatorIOSim implements ElevatorIO {
     MechanismLigament2d m_targetLength =
             root.append(new MechanismLigament2d("targetLength", 0, ELEVATOR_ANGLE.getDegrees()));
     MechanismLigament2d m_elevator = root.append(new MechanismLigament2d("elevator", 0, ELEVATOR_ANGLE.getDegrees()));
-
-    private double numRotations = 0.0; // Temporary tracking variable for testing before implementing ElevatorSim
     double currentVolts = 0.0;
 
     public ElevatorIOSim() {

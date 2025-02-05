@@ -11,6 +11,7 @@ import ca.warp7.frc2025.subsystems.drive.GyroIOPigeon2;
 import ca.warp7.frc2025.subsystems.drive.ModuleIO;
 import ca.warp7.frc2025.subsystems.drive.ModuleIOSim;
 import ca.warp7.frc2025.subsystems.drive.ModuleIOTalonFX;
+import ca.warp7.frc2025.subsystems.elevator.ElevatorConstants.LEVEL;
 import ca.warp7.frc2025.subsystems.elevator.ElevatorIOSim;
 import ca.warp7.frc2025.subsystems.elevator.ElevatorSubsystem;
 import ca.warp7.frc2025.subsystems.generated.TunerConstants;
@@ -105,6 +106,11 @@ public class RobotContainer {
                         () -> -controller.getLeftY(),
                         () -> -controller.getLeftX(),
                         () -> Rotation2d.fromDegrees(90)));
+
+        controller.a().onTrue(elevator.goToPosition(LEVEL.L1));
+        controller.x().onTrue(elevator.goToPosition(LEVEL.L2));
+        controller.b().onTrue(elevator.goToPosition(LEVEL.L3));
+        controller.y().onTrue(elevator.goToPosition(LEVEL.L4));
     }
 
     public Command getAutonomousCommand() {

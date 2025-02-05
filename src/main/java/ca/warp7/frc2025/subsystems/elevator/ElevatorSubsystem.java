@@ -6,7 +6,6 @@ import ca.warp7.frc2025.util.LoggedTunableNumber;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -17,7 +16,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     boolean enabled = true;
     boolean debounce = false;
 
-    private final LoggedTunableNumber targetPosition;
+    private double targetPosition;
 
     // Untuned PID constants
     private static final LoggedTunableNumber kP = new LoggedTunableNumber("Elevator/kP", GAINS.kP());
@@ -28,15 +27,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     public ElevatorSubsystem(ElevatorIO io) {
         this.io = io;
         this.pidController = new ProfiledPIDController(kP.get(), kI.get(), kD.get(), new Constraints(10.0, 5.0));
-        this.targetPosition = new LoggedTunableNumber("Elevator/targetPosition", 5);
-        io.setTarget(this.targetPosition.get());
+        this.targetPosition = 0;
+        io.setTarget(this.targetPosition);
     }
 
     @Override
     public void periodic() {
         double currentPosition = inputs.elevatorPositionMeters;
 
-        double motorOutput = pidController.calculate(currentPosition, targetPosition.get());
+        double motorOutput = pidController.calculate(currentPosition, targetPosition);
 
         LoggedTunableNumber.ifChanged(
                 hashCode(),
@@ -49,23 +48,16 @@ public class ElevatorSubsystem extends SubsystemBase {
                 kI,
                 kD);
 
-        LoggedTunableNumber.ifChanged(
-                hashCode(),
-                () -> {
-                    io.setTarget(targetPosition.get());
-                },
-                targetPosition);
-
         System.out.println(motorOutput);
         io.setVoltage(motorOutput);
         io.updateInputs(inputs);
         Logger.processInputs("Elevator Inputs", inputs);
     }
 
-    public Command goToPosition(double position) {
+    public Command goToPosition(LEVEL position) {
         return this.runOnce(
                 () -> {
-                    // targetPosition;
+                    targetPosition = position.getPosition();
                     Logger.recordOutput("Elevator/TargetPosition", targetPosition);
                 } // function
                 );
