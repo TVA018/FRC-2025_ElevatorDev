@@ -59,6 +59,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         System.out.println(motorOutput);
         io.setVoltage(motorOutput);
         io.updateInputs(inputs);
+        Logger.processInputs("Elevator Inputs", inputs);
     }
 
     public Command goToPosition(double position) {
