@@ -2,30 +2,34 @@ package ca.warp7.frc2025.subsystems.elevator;
 
 import static ca.warp7.frc2025.subsystems.elevator.ElevatorConstants.*;
 
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 public class ElevatorIOTalonFX implements ElevatorIO {
     /*Hardware*/
-    private final TalonFX motor1;
-    private final TalonFX motor2;
+    private final TalonFX parentMotor;
+    private final TalonFX followerMotor;
+    private final TalonFXConfiguration config = new TalonFXConfiguration();
     // Have some sort of way to detect current
 
-    public ElevatorIOTalonFX(int motor1Id, int motor2Id) {
-        motor1 = new TalonFX(motor1Id);
-        motor2 = new TalonFX(motor2Id);
+    public ElevatorIOTalonFX(int parentMotorId, int followerMotorId) {
+        config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        
+        parentMotor = new TalonFX(parentMotorId, "rio");
+        followerMotor = new TalonFX(followerMotorId, "rio");
+        followerMotor.setControl(new Follower(parentMotor.getDeviceID(), true));
     }
 
     @Override
     public void setVoltage(double volts) {
-        motor1.setVoltage(volts);
-        motor2.setVoltage(volts);
+        parentMotor.setVoltage(volts);
     }
 
     @Override
     public void updateInputs(ElevatorIOInputs inputs) {
-        double rotations = motor1.getPosition().getValueAsDouble();
+        double rotations = parentMotor.getPosition().getValueAsDouble();
         inputs.elevatorPositionMeters = rotationsToMeters(rotations);
-        inputs.elevatorAppliedVolts = motor1.getMotorVoltage().getValueAsDouble();
+        inputs.elevatorAppliedVolts = parentMotor.getMotorVoltage().getValueAsDouble();
     }
 
     private double rotationsToMeters(double rotations) {
