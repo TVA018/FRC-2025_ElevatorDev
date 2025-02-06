@@ -26,5 +26,5 @@ public class ElevatorConstants {
 
     public static final record PIDGains(double kP, double kI, double kD) {}
 
-    public static final PIDGains GAINS = new PIDGains(25, 0, 0); // a P value of 25 seems to work well
+    public static final PIDGains GAINS = new PIDGains(5, 0, 0); // a P value of 25 seems to work well
 }
