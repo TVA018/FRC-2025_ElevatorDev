@@ -29,6 +29,6 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     }
 
     private double rotationsToMeters(double rotations) {
-        return (rotations * GEAR_RATIO) / (2 * Math.PI) * DRUM_RADIUS_METERS;
+        return (rotations * GEAR_RATIO) * (2 * Math.PI) * DRUM_RADIUS_METERS;
     }
 }
