@@ -5,6 +5,7 @@ import static ca.warp7.frc2025.subsystems.elevator.ElevatorConstants.*;
 import ca.warp7.frc2025.subsystems.elevator.ElevatorConstants.LEVEL;
 import ca.warp7.frc2025.util.LoggedTunableNumber;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,29 +21,40 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private double targetPosition;
 
-    // Untuned PID constants
-    private static final LoggedTunableNumber kP = new LoggedTunableNumber("Elevator/kP", GAINS.kP());
-    private static final LoggedTunableNumber kI = new LoggedTunableNumber("Elevator/kI", GAINS.kI());
-    private static final LoggedTunableNumber kD = new LoggedTunableNumber("Elevator/kD", GAINS.kD());
+    // PID values
     private final ProfiledPIDController pidController;
+    private static final LoggedTunableNumber kP = new LoggedTunableNumber("Elevator/PID/kP", GAINS.kP());
+    private static final LoggedTunableNumber kI = new LoggedTunableNumber("Elevator/PID/kI", GAINS.kI());
+    private static final LoggedTunableNumber kD = new LoggedTunableNumber("Elevator/PID/kD", GAINS.kD());
+
+    private static final LoggedTunableNumber maxVelocity =
+            new LoggedTunableNumber("Elevator/PID/maxVelocity", MAX_VELOCITY);
+    private static final LoggedTunableNumber maxAcceleration =
+            new LoggedTunableNumber("Elevator/PID/maxAcceleration", MAX_ACCELERATION);
+
+    // FeedForward  values
+    private static final LoggedTunableNumber kS = new LoggedTunableNumber("Elevator/FeedForward/kS", GAINS.kS());
+    private static final LoggedTunableNumber kG = new LoggedTunableNumber("Elevator/FeedForward/kG", GAINS.kG());
+    private static final LoggedTunableNumber kV = new LoggedTunableNumber("Elevator/FeedForward/kV", GAINS.kV());
+    private static final LoggedTunableNumber kA = new LoggedTunableNumber("Elevator/FeedForward/kA", GAINS.kA());
 
     public ElevatorSubsystem(ElevatorIO io) {
         this.io = io;
         this.pidController = new ProfiledPIDController(
-            kP.get(), 
-            kI.get(), 
-            kD.get(), 
-            new Constraints(0.2, 6.0)
-        );
+                kP.get(), kI.get(), kD.get(), new Constraints(maxVelocity.get(), maxAcceleration.get()));
 
         this.targetPosition = 0;
     }
 
+    ElevatorFeedforward feedforward = new ElevatorFeedforward(kS.get(), kG.get(), kV.get(), kA.get());
+
     @Override
     public void periodic() {
         double currentPosition = inputs.elevatorPositionMeters;
+        double currentVelocity = inputs.elevatorVelocityMetersPerSec;
 
-        double motorOutput = pidController.calculate(currentPosition, targetPosition);
+        double feedforwardOutput = feedforward.calculate(currentVelocity);
+        double pidOutput = pidController.calculate(currentPosition, targetPosition);
 
         LoggedTunableNumber.ifChanged(
                 hashCode(),
@@ -50,11 +62,25 @@ public class ElevatorSubsystem extends SubsystemBase {
                     pidController.setP(kP.get());
                     pidController.setI(kI.get());
                     pidController.setD(kD.get());
+                    pidController.setConstraints(new Constraints(maxVelocity.get(), maxAcceleration.get()));
                 },
                 kP,
                 kI,
-                kD);
-        
+                kD,
+                maxAcceleration,
+                maxVelocity);
+        LoggedTunableNumber.ifChanged(
+                hashCode(),
+                () -> {
+                    feedforward = new ElevatorFeedforward(kS.get(), kG.get(), kV.get(), kA.get());
+                },
+                kS,
+                kG,
+                kV,
+                kA);
+        // Feed forward
+        // Maybe unnessicary
+        double motorOutput = pidOutput + feedforwardOutput;
         motorOutput = MathUtil.clamp(motorOutput, -12.0, 12.0);
         io.setVoltage(motorOutput);
         io.updateInputs(inputs);
